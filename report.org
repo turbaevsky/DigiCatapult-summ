@@ -1,0 +1,443 @@
+#+TITLE: Abstractive Summarization and Extractive Generalization with NLP. 2022-10033-Standard Purchase Framework Agreement-Livedata Ltd-AI Researchers-P2021-065. Draft (3) report
+#+AUTHOR: [[https://livedata.link][Livedata Limited]]
+
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LaTeX_HEADER: \usepackage[margin=1in, headheight=40pt]{geometry}
+#+LaTeX_HEADER: \let\description\compactdesc
+#+LaTeX_HEADER: \usepackage{fancyhdr}
+#+LaTeX_HEADER: \usepackage{lipsum}
+#+LaTeX_HEADER: \pagestyle{fancy}
+#+LaTeX_HEADER: \lhead{\includegraphics[width=20mm]{logo.png}}
+#+LaTeX_HEADER: \chead{}
+#+LaTeX_HEADER: \rhead{Livedata Limited}
+#+LaTeX_HEADER: \usepackage{hyperref}
+#+LaTeX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+
+#+bibliography: bib.bib
+#+cite_export: basic
+
+* Intro
+# CLARIFY John: A one-page executive summary (possibly in bullets) would be helpful to the reader
+# DONE John: The report should describe the business problem (generalizing and summarizing risk factors).  Right now it reads like one is just doing general NLP research.
+Currently, there is a wide variety of  Natural Language Processing (NLP) tasks; these range from a very basic pattern search to profoundly intelligent chat bots with the functionality to replace human operators.
+In particular, there is a specific set of tasks which enables us to process an especially  large volume of papers - either in pdf or html format – in order to extract the most important information. Additionally,  it is sometimes necessary to remove certain information from the text to follow GDPR or other regulations.
+
+** Project beneficiary [cite:@desc]
+The beneficiary company (the company) was founded in November 2019 with a mission to help companies get listed, and maintain that listing, by automating prospectus drafting.
+
+The University of Manchester’s National Centre for Text Mining (NaCTeM) is one of the world’s foremost NLP research centres with extensive industry collaboration experience.
+
+One of the company’s products aims to automate drafting of the risk factors section. In brief, the company uses natural language processing (NLP) to classify individual risk factors from past deals and returns those falling under selected categories to the user.
+
+The company  wishes to develop, in collaboration with NaCTeM, additional features that would customise
+the returned risk factors for the deal the user is working on:
+
+- The removal of precedent-specific information. A precedent risk factor typically contains information that is relevant only to the company in the precedent. In order to “generalise” the precedent risk factor, such information must be removed.
+
+- The addition of relevant information. The “generalised” risk factor must be developed to include information relevant to the deal the user is working on. The user may provide such information in bullet points for expansion in the style of the “generalised” risk factor.
+
+The relevant NLP techniques include text summarisation (abstractive and/or extractive), paraphrasing, and generation.
+
+** Example
+Suppose the precedent risk factor text is as follows:
+/“Our business, financial condition and results of operations may be adversely affected by the COVID-19 pandemic./
+
+The COVID-19 pandemic, and measures to prevent its spread, may have a material adverse impact on our business, financial condition and results of operations. Governmental and non-governmental initiatives to reduce the transmission of COVID-19, such as the imposition of restrictions on work and public gatherings and the promotion of social distancing, have impacted and could continue to impact our operations and financial results. /For example, in the six months ended September 30, 2020, our Trade Show business line ran seven trade shows (versus 21 trade shows in the prior comparable period in 2019) and generated €7.1 million in revenue (versus €31.0 million in the prior comparable period in 2019)/. In France for example significant restrictions and social distancing measures remain in place, which continue to adversely affect the overall French and global economies and, in turn, both our French and global operations.”
+
+The text /highlighted/ in red are issuer-specific and should be removed.
+
+Suppose the user provides the following additional factual information for the deal they are working on:
+- Number of exhibitions: 15 in 2019 vs. 2 in 2020
+- Number of new leads from in-person sales: around 250 in 2019 vs 20 in 2020
+  
+The updated risk factor taking into account this additional factual information could look as follows
+with the additional relevant information /highlighted/:
+“Our business, financial condition and results of operations may be adversely affected by the COVID-19 pandemic.
+The COVID-19 pandemic, and measures to prevent its spread, may have a material adverse impact on our business, financial condition and results of operations.
+Governmental and non-governmental initiatives to reduce the transmission of COVID-19, such as the imposition of restrictions on work and public gatherings and the promotion of social distancing, have impacted and could continue to impact our operations and financial results. /For example, we were only able to run 2 exhibitions in 2020, compared to 15 in 2019. The number of new leads from in-person sales also decreased dramatically from around 250 in 2019 to 20 in 2020./ In France for example significant restrictions and social distancing measures remain in place, which continue to adversely affect the overall French and global economies and, in turn, both our French and global operations.”
+
+* Planning phase
+** Problem definition <<def>>
+Thus, the primary aims of this project are:
+    - Exploration of “abstractive” text summarisation and “extractive” text summarisation options, starting from the ground up and working towards the achievement of custom models - please find the term definition in the Glossary at section [[glos]].
+    - Development of models during the exploration process (it is difficult to predict high accuracy).
+    - Construction of prelimenary and very basic library/API prototype(s) where appropriate in Python and other programming languages.
+    - Suitable test metric to assess the performance of the prototype solution (may not be possible for abstractive text summarisation).
+    - Creation of a brief report with details regarding the methods explored, test results and best suggestions for further improvement. 
+
+However, this project does NOT include the following:
+    - A thorough technical review of all options. Instead, it will focus on allocating more time for the selection of promising options for detailed exploration and subsequent development.
+    - Data collection[fn:1], since data has already been collected and provided.
+    - Text insertion problem or “re-specification” of generalised text.
+** Key Stages
+The project can be divided into the three stages described below. These stages correlate with the Order Form.
+Currently, the first stage is fully completed, whilst the second and third stages are in progress.
+
+- /Planning and meetings/ 
+  - Meetings with the client and Luke Ellison (from Digital Catapult) to establish the initial scope of the project, gather information, deliver updates and present final reports. 
+  - Individual planning time and creation of plan[fn:5].
+
+- /Individual Research/ (see section [[res]] below)
+  - A body of work to perform the required research. This includes background reading, data analysis, model creation, experimentation and analysis of results.
+  - To be conducted in June, July and August 2022.
+
+- /Report creation and work publication/
+  - Production of a document outlining the results of the research collaboration and any work required in presenting or publishing these results.
+  - A draft will be written prior to 1st August 2022, with the final report completed by mid-September.
+
+* Research phase <<res>>
+** Methodology
+The project is expected to be divided into the following stages:
+    - obtaining the full training dataset from the client
+    - identifying the list of libraries or modules to be used for resolving abstractive summarisation and extractive generalisation tasks
+    - defining the set of metrics to be used for an assessment of model quality
+    - training and assessing a set of distinct models, with special consideration given to the most appropriate metrics of performance
+    - selecting one or more models that are best suited for resolving the necessary tasks
+    - reaching a conclusion regarding package selection and subsequent model implementation for the NLP task at hand.
+      
+** Libraries that suit the summarisation task <<lib>>
+Ten of the most popular NLP packages are outlined in the article[cite:@art1]. At the time of writing, searching for “NLP” on [[https://pypi.org/search/?q=NLP][PyPI]] leads to more than 1,560 results, with similar results for [[https://libraries.io/search?languages=Python&q=NLP][Libraries.io]], given that 450 Python packages/libraries are found for the keyword.
+The principal change which occured in the last few years is the more widespread adoption of neural networks, deep learning, and particularly Transformer-based models, such as [[https://arxiv.org/abs/1810.04805][BERT]] (late 2018), [[https://d4mucfpksywv.cloudfront.net/better-language-models/language_models_are_unsupervised_multitask_learners.pdf][GPT-2]] (2019), and the relatively recent [[https://arxiv.org/abs/2005.14165][GPT-3]] (2020). Consequently, although ‘traditional’ approaches to NLP and computational linguistics are still widely utilised as viable solutions, the new models and methods are swiftly moving the entire field forward, enabling us to perform complex tasks via implementing the encoder-decoder architecture.
+
+The following criteria were employed to select the most promising libraries:
+    - The library is Python-based - Python is the most popular language for all data science problems, including Natural Language Processing
+    - The library is actively being developed and supported – Therefore, this ensures that the library remains reliable and suitable for professional usage in projects.
+    - The library is multi-purpose – This enables us to utilise the library for various tasks, meaning that the need to switch between distinct libraries is eliminated.
+    - The library possesses numerous GitHub stars - this reflects the popularity of a package and guarantees that the library is regularly tested by the GitHub community and likely contains few errors.
+
+Based on this criteria, it is reasonable to conclude that the following ten packages are best suited for Natural Language Processing[fn:2][cite:@art2]:
+
+- /[[https://github.com/huggingface/transformers][Transformers]]/: Provide easy access to a large number of powerful models (Transformer-based) that can be utilised directly or fine-tuned using PyTorch or TensorFlow.
+- /[[https://github.com/explosion/spaCy][spaCy]]/: A powerful, all-purpose library with an intuitive API, an excellent ecosystem and sophisticated support for Deep Learning.
+- /[[https://github.com/RaRe-Technologies/gensim][Gensim]]/: Excellent for highly-efficient and scalable topic and semantic modelling. Moreover, it provides easy access to Word2Vec and fastText.
+- /[[https://github.com/nltk/nltk][NLTK]]/: The principal NLP library that has served as the basis for all other libraries. NLTK is still the de-facto standard for many NLP tasks and continues to be most effective for educational purposes.
+- /[[https://github.com/flairNLP/flair][flair]]/: Very easy-to-use, whilst also providing powerful features, such as stacking embeddings and custom features such as “Flair embeddings.”
+- /[[https://github.com/allenai/allennlp][AllenNLP]]/: Enables the construction of more sophisticated and accurate NLP models through   high-level abstractions. Furthermore, it has a very good CLI (Command-Line-Interface) for running pre-trained models.
+- /[[https://github.com/sloria/TextBlob][TextBlob]]/: An ergonomic toolkit that is most effective at solving common, more ‘traditional’ NLP tasks.
+- /[[https://github.com/stanfordnlp/stanza][Stanza]]/: Provides a complete and robust NLP pipeline, whilst also serving as an efficient all-purpose library. It is language-agnostic and currently supports 66 languages with pre-trained neural models; this includes access to Stanford’s CoreNLP.
+- /[[https://github.com/NervanaSystems/nlp-architect][NLP Architect]]/: Allows for exploration and experimentation with various state-of-the-art techniques.
+- /[[https://github.com/JohnSnowLabs/spark-nlp][Spark NLP]]/: Enables us to run complex NLP pipelines in a distributed environment and contains over 220 pre-trained pipelines and models that can be easily utilised for resolving various tasks.
+    
+** Model metrics
+# REVIEW Manu: I understand this is a draft document, and you will structure the contents in a better way, in the final document (Example - standard metrics, nlp specific metrics, task specific metrics and the sub divisions under task specific metrics -> for extractive and abstractive etc can be formatted well for better readability). Also, references can be given for Gleu, WER etc. May be a little bit of explanation on those may be good.
+
+There are both standard and specific quality metrics[cite:@art3] that can be used to assess model quality.
+
+*** Standard metrics
+
+It's critical to use the appropriate metric when assessing machine learning (ML) models.
+To better understand each metric and the applications they might be used for, we thought it could be beneficial to present a summary of the most common metrics in this paper. Different metrics are proposed to evaluate ML models in different applications.
+A subset of the metrics presented in this paper may be used to evaluate a models in some scenarios where looking at just one measure won't provide you a complete picture of the issue you are trying to solve.
+
+We group these metrics into different categories based on the ML model/application they are mostly used for, and cover the popular metrics used in the following problems[cite:@metrics]:
+
+- Classification Metrics (accuracy, precision, recall, F1-score, ROC, AUC etc.)
+- Regression Metrics (MSE, MAE)
+- Ranking Metrics (MRR, DCG, NDCG)
+- Statistical Metrics (Correlation)
+- Computer Vision Metrics (PSNR, SSIM, IoU)
+- NLP Metrics (Perplexity, BLEU score)
+- Deep Learning Related Metrics (Inception score, Frechet Inception distance)
+
+There is no need to mention that there are various other metrics used in some applications (FDR, FOR, hit@k, etc.), which was skipped here.
+
+*** NLP metrics
+
+Whenever we build NLP models, we need some form of metric to measure the goodness of the model. Bear in mind that the “goodness” of the model could have multiple interpretations, but generally when we speak of it here we are talking of the measure of a model's performance on new instances that weren’t a part of the training data[cite:@nlp-metrics].
+
+Governing whether the model being used for a specific task is successful or not depends on 2 key factors:
+
+- Whether the evaluation metric we have selected is the correct one for our problem.
+- If we are following the correct evaluation process.
+
+Below we will cover some top metrics that we should consider to capture biases.
+
+**** BLEU [cite:@howtoBert]
+
+BLEU: Bilingual Evaluation Understudy or BLEU is a precision-based metric used for evaluating the quality of text which has been machine-translated from one natural language to another by computing the 𝑛-gram overlap between the reference and the hypothesis. In particular, BLEU is the ratio of the number of overlapping 𝑛-grams to the total number of 𝑛-grams in the hypothesis. To be precise, the numerator contains the sum of the overlapping 𝑛-grams across all the hypotheses (i.e., all the test instances) and the denominator contains the sum of the total 𝑛-grams across all the hypotheses (i.e., all the test instances). Here, each 𝑝𝑟𝑒𝑐𝑖𝑠𝑖𝑜𝑛 is summed over all the hypotheses, thus, BLEU is called a corpus-level metric, i.e., BLEU gives a score over the entire corpus (as opposed to scoring individual sentences and then taking an average). Notebook with examples can be downloaded from GitHub [[https://github.com/gcunhase/NLPMetrics/blob/master/notebooks/bleu.ipynb][here]]
+
+**** NIST
+
+The name NIST comes from the organization, “US National Institute of Standards and Technology”. This metric can be thought of as a variant of BLEU which weighs each matched 𝑛-gram based on its information gain(Entropy or Gini Index). The information gain for an 𝑛-gram made up of words 𝑤1, ..,𝑤𝑛 is computed over the set of references.
+It is based on the BLEU metric, but with some alterations. Where BLEU simply calculates n-gram precision adding equal weight to each one, NIST also calculates how informative a particular n-gram is. The idea here is to give more credit if a matched 𝑛-gram is rare and less credit if a matched 𝑛-gram is common which reduces the chance of gaming the metric by producing trivial 𝑛-grams.
+
+**** METEOR
+
+There are two major drawbacks of BLEU:
+- It does not take recall into account.
+- It only allows exact 𝑛-gram matching.
+
+To overcome these drawbacks, METEOR (Metric for Evaluation of Translation with Explicit ORdering) came into being which is based on F-measure and uses relaxed matching criteria. In particular, even if a unigram in the hypothesis does not have an exact surface level match with a unigram in the reference but is still equivalent to it (say, is a synonym) then METEOR considers this as a matched unigram.
+
+More specifically, it first performs exact word mapping, followed by stemmed-word matching, and finally, synonym and paraphrase matching then computes the F-score using this relaxed matching strategy.
+
+METEOR only considers unigram matches as opposed to 𝑛-gram matches it seeks to reward longer contiguous matches using a penalty term known as ‘fragmentation penalty’. To compute this, ‘chunks’ of matches are identified in the hypothesis, where contiguous hypothesis unigrams that are mapped to contiguous unigrams in a reference can be grouped together into one chunk. Therefore, longer 𝑛-gram matches lead to a fewer number of chunks, and the limiting case of one chunk occurs if there is a complete match between the hypothesis and reference. On the other hand, if there are no bigram or longer matches, the number of chunks will be the same as the number of unigrams.
+
+**** ROUGE
+
+ROUGE (Recall-Oriented Understudy for Gisting Evaluation) is Recall based, unlike BLEU which is Precision based. ROUGE metric includes a set of variants: ROUGE-N, ROUGE-L, ROUGE-W, and ROUGE-S. ROUGE-N is similar to BLEU-N in counting the 𝑛-gram matches between the hypothesis and reference. This is a set of metrics used for evaluating automatic summarization and machine translation software in natural language processing. The metrics compare an automatically produced summary or translation against a reference or a set of references (human-produced) summary or translation. This metric is able to utilise any Python library[cite:@rouge]; the python library to calculate such a metric is available [[https://pypi.org/project/rouge/][here]].
+
+**** CIDEr
+
+CIDEr (Consensus-based Image Description Evaluation) proposed in the context of image captioning where each image is accompanied by multiple reference captions. It is based on the premise that 𝑛-grams that are relevant to an image would occur frequently in its set of reference captions.
+
+CIDEr weighs each 𝑛-gram in a sentence based on its frequency in the corpus and in the reference set of the particular instance, using TF-IDF (term-frequency and inverse-document-frequency). However, 𝑛-grams that appear frequently in the entire dataset (i.e., in the reference captions of different images) are less likely to be informative/relevant and hence they are assigned a lower weight using inverse-document-frequency (IDF) term.
+
+**** SPICE
+
+SPICE (Semantic Propositional Image Caption Evaluation)  is another Image captioning Algorithm that focuses on 𝑛-gram similarity, here more importance is given to the semantic propositions implied by the text. SPICE uses ‘scene-graphs’ to represent semantic propositional content. The hypothesis and references are converted into scene graphs and the SPICE score is computed as the F1-score between the scene-graph tuples of the proposed sentence and all reference sentences. For matching the tuples, SPICE also considers synonyms from WordNet similar to METEOR.
+One issue with SPICE is that it depends heavily on the quality of parsing and it also neglects fluency assuming that the sentences are well-formed. It is thus possible that SPICE would assign a high score to captions that contain only objects, attributes, and relations, but are grammatically incorrect.
+
+The embedding-based metrics discussed above use static word embeddings, i.e., the embeddings of the words are not dependent on the context in which they are used but here the embedding of a word depends on the context in which it is used.
+
+**** SpaCy [[https://spacy.io/api/span#similarity][similarity]]
+
+By default it's [[https://en.wikipedia.org/wiki/Cosine_similarity#Definition][cosine similarity]], with vectors averaged over the document for missing words.
+
+**** BERT
+
+BERT is to obtain the word embeddings and shows that using contextual embeddings along with a simple average recall-based metric gives competitive results. The BERT score is the average recall score overall tokens, using a relaxed version of token matching based on BERT embeddings, i.e., by computing the maximum cosine similarity between the embedding of a reference token and any token in the hypothesis.
+
+**** Bert Score
+
+Bert score or Bidirectional Encoder Representations from Transformers compute cosine similarity of each hypothesis token 𝑗 with each token 𝑖 in the reference sentence using contextualized embeddings. They use a greedy matching approach instead of a time-consuming best-case matching approach and then compute the F1 measure.
+For more information about Bert, click here. The example of code can be found [[https://github.com/Tiiiger/bert_score][here]]
+
+**** MOVERscore
+
+MOVERscore takes inspiration from WMD metric to formulate an optimal matching metric, which uses contextualized embeddings to compute the Euclidean distances between words or 𝑛-grams. In contrast to BERTscore which allows one-to-one hard matching of words, MoverScore allows many-to-one matching as it uses soft/partial alignments, similar to how WMD allows partial matching with word2vec embeddings. It has been shown to have competitive correlations with human judgments in 4 NLG tasks: machine translation, image captioning, abstractive summarization, and data-to-text generation.
+
+*** Conclusion
+
+# Manu: While explaining the reason why you chose similarity-based metrics - the explanation seems to be a bit confusing. I guess, you can start by explaining what is similarity-based evaluation metric  (that contains a bit of contextual information) and what is the basis of bleu or Bert score etc (n - gram based) and come to the point about why one is better than other.
+
+The customer provided us with a training dataset for both abstractive summarization and extractive generalisation.
+
+We proceeded to conduct a number of tests to gauge the effectiveness of libraries from the list mentioned at section [[lib]] above, in order to find two of the most applicable libraries for reaching the goals described above. Flexibility and transformation accuracy were considered to be the most criteria during the testing process.
+
+Therefore, a specific set of metrics was identified to confirm or disprove the applicability of the model and library for completing the task at hand.
+
+After a comprehensive set of experiments, we concluded that the usage of a cosine-based similarity criteria was most efficient for assessing the quality of the /abstractive summarisation/ model.
+
+The /extractive generalisation/ result can be explained due to other criteria - such as BLEU or BERTScore – being either more oriented towards assessing translation tasks (assessing the number of the same or similar words when comparing results to expectations).
+
+** Modelling
+# REVIEW Manu: Also, section 3.3. 4 may be structured more effectively (formatting and scoping the contents more towards the focus - `abstractive and extractive summarisation`,  and why you concluded to use transformers for abstractive and spacy for extractive summarisation out of various options mentioned. May be tweaking the content/formatting it well may help it more readable and focussed.
+Let us recall the highest priority task for the project: "Exploration of ‘abstractive’ text summarisation and ‘extractive’ text summarisation options. Starting from the ground up and working towards custom models."[cite:@abs_sum_2]
+
+To resolve the summarisation task two approaches can be used:
+    - The first approach entails the selection of the most ‘important’ sentences through a word frequency analysis; the system subsequently selects and copies a selection of sentences from the source without any changes to the sentences. The benefits of using this approach are: 
+      (a) the sentences usually make more sense in comparison to a machine-generated alternatives, since they come from the original text and likely do not require additional alignment.
+      (b) the method is sufficiently simple and swift in realising the solution – it enables the usage of very basic NLP packages such as NLTK or even RegExpr to fully resolve the problem.
+      Extractive summarisation based on an assessment of ‘sentence importance’ is realised into python library [[https://pypi.org/project/pysummarization/][pysummarization]].
+      
+    - Another approach is based on Deep Neural Networks (DNNs). The architecture of DNNs is derived from that of the human brain, whereby layers of neurons are intertwined with each other through different ‘weights’ for each connection (i.e. the process of training the network). The weight coefficients are chosen in accordance to specific mathematical functions, so that each input has a unique, desirable output to match the expected result. DNNs are primarily utilised when it is substantially difficult to adhere to a large number of rules and conditions, since DNNs are extremely flexible and contain numerous parameters.
+      The most important neural net architectures[cite:@ml2] are feed-forward neural nets for tabular data, convolutional nets for computer vision, recurrent nets and long short-term memory (LSTM) nets for sequence processing, encoder/decoders and Transformers for Natural Language Processing, as well as auto-encoders and Generative Adversarial Networks (GANs) for generative learning.
+
+** Experimentation
+# TODO: Add a bit code explanation 
+*** Abstractive summarisation
+These approaches allow us to produce a new and completely unique text to summarise the source, and it is hence labelled as abstractive summarisation. To determine the accuracy level, we tested all of the packages described above and came to the conclusion that the best results are presented using the [[https://github.com/huggingface/transformers][Transformers]] package (through the default BERT[cite:@bert] library) and the [[https://github.com/google-research/pegasus][PEGASUS]] library. The first package shows more flexibility, since it allows us to select the most effective language module for further utilisation and has a less significant size (approximately 1GB less) in comparison to PEGASUS by default. Thus, it is much swifter in operation and contains more sophisticated performance metrics.
+
+The example of /transformers/ implementation is presented below.
+#+begin_src python
+  from transformers import pipeline
+  import os
+  ## Setting to use the bart-large-cnn model for summarization
+  summarizer = pipeline("summarization")
+  import pandas as pd
+  df = pd.read_csv('../data/Dataset.csv')
+    
+  arr = []
+  for i in range(len(df)):
+      try:
+	  txt = df.iloc[i][1]
+	  sm = summarizer(txt, max_length=100, min_length=5, do_sample=False)[0]['summary_text']
+	  t1 = nlp(txt)
+	  t2 = nlp(sm)
+	  r = t1.similarity(t2)
+	  print(f'{i} out of {len(df)} returns {r:.3f}')
+	  arr.append(r)
+      except Exception as e:
+	  print(e)
+#+end_src
+
+The sentence importance analysis example is shown as the following.
+
+#+begin_src python
+from spacy.lang.en.stop_words import STOP_WORDS
+from string import punctuation
+from collections import Counter
+from heapq import nlargest
+
+def sm2(txt): 
+    doc = nlp(re.sub(r'\n',' ',txt))
+    keyword = []
+    stopwords = list(STOP_WORDS)
+    pos_tag = ['PROPN', 'ADJ', 'NOUN', 'VERB']
+    for token in doc:
+        if(token.text in stopwords or token.text in punctuation):
+            continue
+        if(token.pos_ in pos_tag):
+            keyword.append(token.text)
+    freq_word = Counter(keyword)
+
+    max_freq = Counter(keyword).most_common(1)[0][1]
+    for word in freq_word.keys():  
+        freq_word[word] = (freq_word[word]/max_freq)
+    freq_word.most_common(5)
+
+    sent_strength={}
+    for sent in doc.sents:
+        for word in sent:
+            if word.text in freq_word.keys():
+                if sent in sent_strength.keys():
+                    sent_strength[sent]+=freq_word[word.text]
+                else:
+                    sent_strength[sent]=freq_word[word.text]
+
+    summarized_sentences = nlargest(3, sent_strength, key=sent_strength.get)
+    # summary
+    final_sentences = [ w.text for w in summarized_sentences ]
+    summary = ' '.join(final_sentences)
+    return(summary)
+
+import re
+arr2 = []
+for i in range(len(df)):
+    try:
+        txt = df.iloc[i][1]
+        sm = sm2(txt)
+        t1 = nlp(txt)
+        t2 = nlp(sm)
+        r = t1.similarity(t2)
+        print(f'{i} out of {len(df)} returns {r:.3f}')
+        arr2.append(r)
+    except Exception as e:
+        print(e)
+#+end_src
+
+The results of similarity metric comparison for different methods are presented below at picture [[fig:bert-abs]] and [[fig:spacy-ext]].
+
+*** Extractive generalisation
+Extractive generalisation demands the removal of any [company] specific information from the source. Our findings have shown that such tasks can be resolved using a Named Entity Recognition (NER) approach, which is usually included in many NLP packages by default. After a set of comprehensive tests, we discovered that the best results were shown when using the SpaCy library, as it contains a number of pre-trained language models which consist of numerous embedded functionalities, including tokenization, lemmatization, Point-Of-Speech (POS) extraction and named-entity extraction. In our [[https://github.com/turbaevsky/DigiCatapult-summ][API at GitHub]] - which is deployed at https://livedata.link/nlp/upload - we had created an NER-analyser and subsequently removed all of the sentences that contain any organisational or personal names, dates, currencies, geographical locations and other sensitive data. As the task requested a completion of extractive summarisation, this approach has been determined to be the most reasonable, because it provides the highest similarity metric in comparison to other potential approaches.
+
+The implementation of such an approach using python is shown below.
+
+#+begin_src python
+import spacy
+nlp = spacy.load("en_core_web_sm")
+
+def excl(txt):
+    excl = ""
+    doc = nlp(txt)
+    for i, s in enumerate(doc.sents):
+        for token in s:
+            #if token.ent_type_ != '' or token.pos_ != '':
+            #print(token.text, token.lemma_, token.ent_type_, token.pos_, token.dep_)
+            if token.ent_type_ in ['GPE', 'NORP']\
+            or token.pos_ == 'NUM'\
+            or (token.dep_ == 'ROOT' and token.lemma_ in ['face','compete','include','benefit','evolve',
+                                                          'affect','rely','develop','accelerate','invest',
+                                                         'acquire']):
+                #print(token.text, token.lemma_, token.ent_type_)
+                excl += (s.text+' ')
+                #print(f'Excluded sentence {i}: {s}')
+                break
+    return excl
+#+end_src
+
+As above, there are few methods combined to remove specific information from a text using [[https://spacy.io/api/token#_title][token attributes]]:
+- removing geographical entities (GPE)
+- deletion any numbes from identidied point-of-speech (NUM)
+- erasing of sentences which have a 'root' keys that included into the list. 'Root' word in a sentence is identified using [[https://spacy.io/usage/linguistic-features][morphological dependency analysis]] in SpaCy.
+
+The selection of key /'root'/ words was found using the following code.
+
+#+begin_src python
+def root(txt):
+    doc = nlp(txt)
+    for i, s in enumerate(doc.sents):
+        for token in s:
+            if token.dep_ == 'ROOT':
+                print(f'Sentence {i} has {token.lemma_} as a root')
+#+end_src
+
+** Result Analysis
+Despite the fact that the most comprehensive models - such as BERT, GPT(s) or PEGASUS - can provide the required functionality, our aim is to provide the most efficient service for the tasks at hand. Following the comprehensive testing process, it can be confirmed that the following hypotheses are correct:
+    - /SpaCy/[cite:@spacy] has an advanced linguistic module that is capable of undertaking all of the necessary linguistic transformations and analysis. Additionally, it contains a list of modules to be used for heavily individual tasks, such as semantic analysis and entity extraction. This includes the ability to connect any third-party Neural Networks framework, such as TensorFlow or PyTorch. Notably, even though there is extensive functionality provision, SpaCy is relatively more overwhelming in comparison to other libraries.
+    - /Transformers/ is a framework that is utilised to adapt any third-party libraries, including TensorFlow and BERT. Thus, Transformers allows us to efficiently employ all of the privileges of transforming learning, although it is important to note that sometimes this makes the resulting library overweight or too complex for commercial service use.
+
+# Manu: I guess, graphs in 4.1.1 and 4.1.2 are not self-explanatory. Adding more text content under the image will make it more explainable. Indicating what x-axis/y-axis data is, and a short explanation on what the figure is about and how to read it, and what the visualisation is about etc.
+*** Abstractive summarisation
+Below, you can see the result of BERT-based /transformers/ and /SpaCy-based/ absractive summarisation models.
+
+#+caption: Abstractive summarisation similarity metrics
+#+BEGIN_center
+#+ATTR_LaTeX: :height 0.3\textwidth :center
+#+NAME:   fig:bert-abs
+[[./sim_trans.png]]
+#+ATTR_LaTeX: :height 0.3\textwidth :center
+#+name: fig:spacy-ext
+[[./sim_tf_idf.png]]
+#+END_center
+
+Surprisingly, it became clear that the extractive summarisation model showed a better similarity metric than the more advanced BERT model.
+
+*** Extractive generalisation
+To resolve the extractive generalisation task, we assumed that /point-of-speech/ (POS) and entity-type recognition should be used to optimise performance, whereby all the sentences containing either geographical position, name, or numbers are removed. Notably, the deletion of any organisation names would also be significant in enhancing performance.
+
+To assess the quality of the model the following approach has been utilised:
+- the source dataset has been converted into a new one by creating a new column which contains the sentences /to be removed/ from the source text.
+- the SpaCy-based POS and entity type recognition were used for selecting sentences which have any /specific/ information, such as location, name of business, etc.
+- the /corpus-based BLEU/ metric[fn:4] was used to compare sentences that have been removed with the sentences which are /expected/ to be removed.
+
+As a result of the comparison, the following chart was constructed.
+
+#+name: fig:bleu
+#+caption: BLEU score for extractive generalisation test
+[[./bleu.png]]
+
+** Conclusion
+
+Following the successful completion of our experiments, we are able to conclude that:
+
+- the most applicable library to be used for /abstractive summarisation/ is the ‘summarisation’ module, based on a BERT library, such as /transformers/.
+  
+However, the similarity metric which was used for the training dataset demonstrated that simple 'TF-IDF'-based summarisation works faster than BERT-based abstractive summarisation, displaying higher similarity. The result of the processing is presented above.
+
+- the PEGASUS module has also provided a good result (as shown below), but it requires more resources to ensure effective operation. Hence, it occupies the second spot of our rating.
+
+- at the same time, to complete an /extractive generalisation/ task, the SpaCy module has proved to be one of the most effective, as confirmed by the image [[fig:bleu]] above.
+
+Additionally, given that we closely follow the Agile methodology, we have developed a simple API – which is available on GitHub - to assess the training dataset and experiment with any other texts. This is profoundly important because this adds additional flexibility to our model, allowing for further usage in other applications without significant adaptations.
+
+* Bibliography
+# HowTo:
+# https://orgmode.org/manual/Citation-handling.html
+# https://github.com/jkitchin/org-ref/blob/master/org-ref.org
+# https://orgmode.org/manual/Citation-export-processors.html
+# https://blog.tecosaur.com/tmio/2021-07-31-citations.html
+
+#+print_bibliography:
+
+#+LaTeX: \appendix
+* Glossary <<glos>>
+- /Abstractive summarization/: Abstractive Text Summarization is the process of generating a short and conci@ml2ummary that captures the salient ideas of the source text[cite:@gl1]. The generated summaries may potentially contain new phrases and sentences that may not appear in the source text.
+- /Extractive generalization/: In our context, extractive generalization reflects the removal of any entity-related specific information, such as an organization’s name, dates, currency value, etc. The extraction process may either copy non-specific sentences or create a summary based on the key information present.
+- /Abstractive[fn:3]/: Rephrasing a block of text.
+- /Extractive/: Extracting data from a block of text only
+
+* Source code
+# Manu: Adding more comments in the code also may help in readability as the code is not modular. Future extensions will be easy with better readable code.
+** API
+#+include: "~/projects/10be5/code/api.py" src python
+* Training dataset examples
+#+include: "~/projects/10be5/data/example.csv" src text
+
+* Footnotes
+[fn:1] The training dataset is available online and sample data is presented in the attachment.
+[fn:2] The ‘GitHub stars criteria’ was used for sorting purposes
+[fn:3] Extractive summary is choosing specific sentences from the text to compile a summary, while abstractive summary means generating a summary in the computer’s own words.
+[fn:4] Corpus score calculation compares 1 candidate document with multiple sentence and 1+ reference documents also with multiple sentences. It is differ from averaging BLEU scores of each sentence, it calculates the score by /summing the numerators and denominators for each hypothesis-reference(s) pairs before the division/
+[fn:5] Mostly conducted in the last 2 weeks of May 2022, with some ongoing meetings for updates provision and further consultation when needed
