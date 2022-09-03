@@ -16,16 +16,16 @@
 #+bibliography: bib.bib
 #+cite_export: basic
 
-* Executive Summary
-The research is covering two specific Natural :anguage Processing (NLP) areas: summarisation and generalisation.
+* Abstract
+The research covers two specific Natural Language Processing (NLP) areas: summarisation and generalisation.
 
-Summarisation has been separated into two sections: extractive and abstractive one (see section [[glos]]). Extractive summarisation implies finding the most important sentences and copying them into output though abstractive one means finding a sense of all the text and creation the new output. The extractive summarisation works much faster than abstractive one due to simple algorithm which lies under the code. Also, this approach guaranties that the phrase's meaning is not changed. However, some important information can be lost as the only selected number of phrases is extracted. Abstractive summarisation is more 'smart' but complex - it requires much more computational resources and well prepared model. The benefit of using the abstractive summarisation is that the output is generated based on whole text meaning, therefore the chance of context loosing is less. Both approaches have been explored and assessed in the paper and can be tried in the [[http://132.145.45.32:8501/][application]].
+The summarisation has been further separated into two distinct sections: extractive and abstractive summarisation (see section [[glos]]). The former involves locating sentences that are fundamental for understanding the text and copying them into the final output, whereas abstractive summarisation analyses the whole passage and constructs a new output. Notably, extractive summarisation works much faster than its abstractive counterpart, due the simpler algorithm that lies at the base of the code. Moreover, this approach guarantees that the phrase's meaning is not altered. Yet, some important information may be lost, as only a specifically selected number of phrases is extracted. On the other hand, the primary benefit of using abstractive summarisation is that the output is generated based on the meaning of the whole text, significantly decreasing the chance of losing key supplementary information. Thus, abstractive summarisation is more advanced, albeit this comes at the expense of higher complexity - much more computational resources and a well-prepared model are paramount for success. Both approaches have been explored and assessed in the paper and can be tested in the [[http://132.145.45.32:8501/][application]].
 
-Generalisation task means removing sensitive or company specific information from the text. One of the approach to be used is a combination of identification specific part of speech (POS) such as financial numbers, geographical location, name of companies etc. (called  Named Entities Recognition[fn:8]) and linguistic analysis (dependency parsing) to find the specific 'head' words[fn:7]. This approach has been assessed during the research (see section [[ex_gen]]) and deployed in the application.
+The generalisation task involves removing sensitive or company-specific information from the text. One of the approaches utilised included a combination of an identification-specific part of speech (POS) - such as financial numbers, geographical location and name of companies - (referred to as  Named Entities Recognition[fn:8]) and linguistic analysis through dependency parsing to find the specific 'head' words[fn:7]. This approach has been assessed during the research (see section [[ex_gen]]) and deployed in the application.
 
-The wide range of the available methodologies and approached have been tested and the recommendation can be find in the section [[fin]].
+A wide range of available methodologies and approaches has been tested; the recommendation can be found in the section [[fin]].
 
-Also, following the Agile methodology[fn:6], a Class and a [[http://132.145.45.32:8501/][UI application]] have been created and deployed with source code located at [[https://github.com/turbaevsky/DigiCatapult-summ][GitHub]].
+Furthermore, following the Agile methodology[fn:6], a Class and a [[http://132.145.45.32:8501/][UI application]] have been created and deployed with source code located at [[https://github.com/turbaevsky/DigiCatapult-summ][GitHub]].
 
 #+ATTR_LATEX: :scale 0.3
 #+NAME:   fig:app
@@ -245,7 +245,7 @@ Scores are calculated for individual translated segmentsâ€”generally sentencesâ€
 
 BLEU's output is always a number between 0 and 1. This value indicates how similar the candidate text is to the reference texts, with values closer to 1 representing more similar texts. Few human translations will attain a score of 1, since this would indicate that the candidate is identical to one of the reference translations. For this reason, it is not necessary to attain a score of 1. Because there are more opportunities to match, adding additional reference translations will increase the BLEU score [cite:@bleu].
 
-Taking into account that our purpose is finding the best matching of generated (excluded, in our case) sentences with expected ones, the BLEU assumed to be the best candidate for /extractive generalisation/ metric.
+Taking into account that we aim to locate the best match between generated (excluded, in our case) and expected sentences, BLEU was assumed to be the best candidate for /extractive generalisation/ metric.
 
 ** Modelling
 # REVIEW Manu: Also, section 3.3. 4 may be structured more effectively (formatting and scoping the contents more towards the focus - `abstractive and extractive summarisation`,  and why you concluded to use transformers for abstractive and spacy for extractive summarisation out of various options mentioned. May be tweaking the content/formatting it well may help it more readable and focussed.
@@ -373,12 +373,12 @@ def excl(txt):
     return excl
 #+end_src
 
-As above, there are few methods combined to remove specific information from a text using [[https://spacy.io/api/token#_title][token attributes]]:
-- removing geographical entities (GPE)
-- deletion any numbes from identidied point-of-speech (NUM)
-- erasing of sentences which have a 'root' keys that included into the list. 'Root' word in a sentence is identified using [[https://spacy.io/usage/linguistic-features][morphological dependency analysis]] in SpaCy.
+As shown above, a few methods are combined to remove specific information from the text using [[https://spacy.io/api/token#_title][token attributes]]:
+- removal of geographical entities (GPE)
+- deletion of any numbers from identified point-of-speech (NUM)
+- erasing sentences which have 'head' keys included in the list. 'Head' word in a sentence is identified using [[https://spacy.io/usage/linguistic-features][morphological dependency analysis]] in SpaCy.
 
-The selection of key /'root'/ words was found using the following code.
+The selection of key /'head'/ words was found using the following code:
 
 #+begin_src python
 def root(txt):
@@ -403,16 +403,16 @@ Below, you can see the result of BERT-based /transformers/ and /SpaCy-based/ abs
 #+caption: Abstractive (BERT) summarisation similarity metrics
 [[./sim_trans.png]]
 
-The averaged similarity score for abstractive summarisation is around 0.8, that means that most of system generated phrases have similar average word-based vector as the expected ones. The similarity score (vertical axis) has a range from zero to one, where one means the whole text matching. The horizontal axis reflects the set of tested texts from the training dataset.
+The similarity score for abstractive summarisation averages at approximately 0.8, meaning that most of the system-generated phrases have similar average word-based vectors to ones expected to be seen by the client in the training dataset. The similarity score (vertical axis) has a range from zero to one, where one means that the whole text matches and vice versa. The horizontal axis reflects the set of tested texts from the training dataset.
 
 #+ATTR_LATEX: :scale 0.5
 #+name: fig:spacy-ext
 #+caption: Exstractive summarisation similarity metrics
 [[./sim_tf_idf.png]]
 
-The averaged similarity score for abstractive summarisation is about 1.0, that means that about all of system generated phrases have about the same average word-based vector as the expected ones. As above, the similarity score (vertical axis) has a range from zero to one, where one means the whole text matching. The horizontal axis reflects the set of tested texts from the training dataset.
+The averaged similarity score for abstractive summarisation is approximately 1.0, which means that almost all of the system-generated phrases have the same average word-based vector as the output expected by the client. As mentioned above, the similarity score (vertical axis) has a range from zero to one, where one means that the whole text matches and vice versa. The horizontal axis reflects the set of tested texts from the training dataset.
 
-Surprisingly, it became clear that the extractive summarisation model showed a better similarity metric than the more advanced BERT model.
+Remarkably, it became clear that the extractive summarisation model showed a better similarity metric than the more advanced BERT model.
 
 *** Extractive generalisation
 To resolve the extractive generalisation task, we assumed that /point-of-speech/ (POS) and entity-type recognition should be used to optimise performance, whereby all the sentences containing either geographical position, name, or numbers are removed. Notably, the deletion of any organisation names would also be significant in enhancing performance.
@@ -429,9 +429,9 @@ As a result of the comparison, the following chart was constructed.
 #+caption: BLEU score for extractive generalisation test
 [[./bleu.png]]
 
-As it is mentioned in section [[bl]], BLEU is working by assessing about word-to-word matching. That is the goal for /extractive generalisation/ as the expectation is that the whole sensitive information related sentence is removed.
+As mentioned in section [[bl]], BLEU works by assessing the degree of word-to-word equivalence and compatibility. That is a task for /extractive generalisation/, as it is expected that all of the sensitive- information-related sentence will be removed.
 
-As it is presented in Fig.[[fig:bleu]] above, the average BLEU score (vertical axis) for training dataset is around 0.6, which is good enough for such kind of task. The issue is that we have pretty limited number of expected sentences (horizontal axis), therefore the assessment may not be accurate enough.
+As illustrated in Fig.[[fig:bleu]] above, the average BLEU score (vertical axis) for the training dataset was around 0.6, which is an acceptable accuracy for this task. However, the principal issue is that we have a relatively limited number of expected sentences (horizontal axis), thus constraining the accuracy of the assessment.
 
 ** Conclusion <<fin>>
 
