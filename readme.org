@@ -1,4 +1,4 @@
-#+TITLE: Abstractive Summarization and Extractive Generalization with NLP. 2022-10033-Standard Purchase Framework Agreement-Livedata Ltd-AI Researchers-P2021-065. Draft (3) report
+#+TITLE: Abstractive Summarization and Extractive Generalization with NLP. 2022-10033-Standard Purchase Framework Agreement-Livedata Ltd-AI Researchers-P2021-065. Draft (4) report
 #+AUTHOR: [[https://livedata.link][Livedata Limited]]
 
 #+LaTeX_CLASS_OPTIONS: [a4paper]
@@ -16,21 +16,37 @@
 #+bibliography: bib.bib
 #+cite_export: basic
 
+* Executive Summary
+The research is covering two specific Natural :anguage Processing (NLP) areas: summarisation and generalisation.
+
+Summarisation has been separated into two sections: extractive and abstractive one (see section [[glos]]). Extractive summarisation implies finding the most important sentences and copying them into output though abstractive one means finding a sense of all the text and creation the new output. The extractive summarisation works much faster than abstractive one due to simple algorithm which lies under the code. Also, this approach guaranties that the phrase's meaning is not changed. However, some important information can be lost as the only selected number of phrases is extracted. Abstractive summarisation is more 'smart' but complex - it requires much more computational resources and well prepared model. The benefit of using the abstractive summarisation is that the output is generated based on whole text meaning, therefore the chance of context loosing is less. Both approaches have been explored and assessed in the paper and can be tried in the [[http://132.145.45.32:8501/][application]].
+
+Generalisation task means removing sensitive or company specific information from the text. One of the approach to be used is a combination of identification specific part of speech (POS) such as financial numbers, geographical location, name of companies etc. (called  Named Entities Recognition[fn:8]) and linguistic analysis (dependency parsing) to find the specific 'head' words[fn:7]. This approach has been assessed during the research (see section [[ex_gen]]) and deployed in the application.
+
+The wide range of the available methodologies and approached have been tested and the recommendation can be find in the section [[fin]].
+
+Also, following the Agile methodology[fn:6], a Class and a [[http://132.145.45.32:8501/][UI application]] have been created and deployed with source code located at [[https://github.com/turbaevsky/DigiCatapult-summ][GitHub]].
+
+#+ATTR_LATEX: :scale 0.3
+#+NAME:   fig:app
+#+caption: UX application
+[[./app.png]]
+
 * Intro
-# CLARIFY John: A one-page executive summary (possibly in bullets) would be helpful to the reader
+# REVIEW John: A one-page executive summary (possibly in bullets) would be helpful to the reader
 # DONE John: The report should describe the business problem (generalizing and summarizing risk factors).  Right now it reads like one is just doing general NLP research.
 Currently, there is a wide variety of  Natural Language Processing (NLP) tasks; these range from a very basic pattern search to profoundly intelligent chat bots with the functionality to replace human operators.
+
+Processing raw text intelligently is difficult: most words are rare, and it’s common for words that look completely different to mean almost the same thing. The same words in a different order can mean something completely different. Even splitting text into useful word-like units can be difficult in many languages. While it’s possible to solve some problems starting from only the raw characters, it’s usually better to use linguistic knowledge to add useful information [cite:@spacy-ling].
+
 In particular, there is a specific set of tasks which enables us to process an especially  large volume of papers - either in pdf or html format – in order to extract the most important information. Additionally,  it is sometimes necessary to remove certain information from the text to follow GDPR or other regulations.
 
 ** Project beneficiary [cite:@desc]
 The beneficiary company (the company) was founded in November 2019 with a mission to help companies get listed, and maintain that listing, by automating prospectus drafting.
 
-The University of Manchester’s National Centre for Text Mining (NaCTeM) is one of the world’s foremost NLP research centres with extensive industry collaboration experience.
-
 One of the company’s products aims to automate drafting of the risk factors section. In brief, the company uses natural language processing (NLP) to classify individual risk factors from past deals and returns those falling under selected categories to the user.
 
-The company  wishes to develop, in collaboration with NaCTeM, additional features that would customise
-the returned risk factors for the deal the user is working on:
+The company  wishes to develop, in collaboration with the others, additional features that would customise the returned risk factors for the deal the user is working on:
 
 - The removal of precedent-specific information. A precedent risk factor typically contains information that is relevant only to the company in the precedent. In order to “generalise” the precedent risk factor, such information must be removed.
 
@@ -119,7 +135,7 @@ Based on this criteria, it is reasonable to conclude that the following ten pack
 - /[[https://github.com/JohnSnowLabs/spark-nlp][Spark NLP]]/: Enables us to run complex NLP pipelines in a distributed environment and contains over 220 pre-trained pipelines and models that can be easily utilised for resolving various tasks.
     
 ** Model metrics
-# REVIEW Manu: I understand this is a draft document, and you will structure the contents in a better way, in the final document (Example - standard metrics, nlp specific metrics, task specific metrics and the sub divisions under task specific metrics -> for extractive and abstractive etc can be formatted well for better readability). Also, references can be given for Gleu, WER etc. May be a little bit of explanation on those may be good.
+# DONE Manu: I understand this is a draft document, and you will structure the contents in a better way, in the final document (Example - standard metrics, nlp specific metrics, task specific metrics and the sub divisions under task specific metrics -> for extractive and abstractive etc can be formatted well for better readability). Also, references can be given for Gleu, WER etc. May be a little bit of explanation on those may be good.
 
 There are both standard and specific quality metrics[cite:@art3] that can be used to assess model quality.
 
@@ -209,17 +225,27 @@ MOVERscore takes inspiration from WMD metric to formulate an optimal matching me
 
 *** Conclusion
 
-# Manu: While explaining the reason why you chose similarity-based metrics - the explanation seems to be a bit confusing. I guess, you can start by explaining what is similarity-based evaluation metric  (that contains a bit of contextual information) and what is the basis of bleu or Bert score etc (n - gram based) and come to the point about why one is better than other.
+# REVIEW: Manu: While explaining the reason why you chose similarity-based metrics - the explanation seems to be a bit confusing. I guess, you can start by explaining what is similarity-based evaluation metric  (that contains a bit of contextual information) and what is the basis of bleu or Bert score etc (n - gram based) and come to the point about why one is better than other.
 
 The customer provided us with a training dataset for both abstractive summarization and extractive generalisation.
 
 We proceeded to conduct a number of tests to gauge the effectiveness of libraries from the list mentioned at section [[lib]] above, in order to find two of the most applicable libraries for reaching the goals described above. Flexibility and transformation accuracy were considered to be the most criteria during the testing process.
 
-Therefore, a specific set of metrics was identified to confirm or disprove the applicability of the model and library for completing the task at hand.
+A specific set of metrics was identified to confirm or disprove the applicability of the model and library for completing the task at hand.
 
 After a comprehensive set of experiments, we concluded that the usage of a cosine-based similarity criteria was most efficient for assessing the quality of the /abstractive summarisation/ model.
 
-The /extractive generalisation/ result can be explained due to other criteria - such as BLEU or BERTScore – being either more oriented towards assessing translation tasks (assessing the number of the same or similar words when comparing results to expectations).
+Similarity is determined by comparing word vectors or “word embeddings”, multi-dimensional meaning representations of a word. Word vectors can be generated using an algorithm like word2vec. Computing similarity scores can be helpful in many situations, but it’s also important to maintain realistic expectations about what information it can provide. Words can be related to each other in many ways, so a single “similarity” score will always be a mix of different signals, and vectors trained on different data can produce very different results that may not be useful for your purpose. The similarity of Doc objects defaults to the average of the token vectors [cite:@spacy-ling].
+
+The /extractive generalisation/ result can be explained due to other criteria - such as BLEU or BERTScore – being either more oriented towards assessing translation tasks (assessing the number of the same or similar words when comparing results to expectations). Finally, BLEU has been selected as a main metric for such kind of task.
+
+BLEU (bilingual evaluation understudy) is an algorithm for evaluating the quality of text which has been machine-translated from one natural language to another. Quality is considered to be the correspondence between a machine's output and that of a human: "the closer a machine translation is to a professional human translation, the better it is" – this is the central idea behind BLEU [cite:@bleu]. <<bl>>
+
+Scores are calculated for individual translated segments—generally sentences—by comparing them with a set of good quality reference translations. Those scores are then averaged over the whole corpus to reach an estimate of the translation's overall quality. Intelligibility or grammatical correctness are not taken into account [cite:@bleu].
+
+BLEU's output is always a number between 0 and 1. This value indicates how similar the candidate text is to the reference texts, with values closer to 1 representing more similar texts. Few human translations will attain a score of 1, since this would indicate that the candidate is identical to one of the reference translations. For this reason, it is not necessary to attain a score of 1. Because there are more opportunities to match, adding additional reference translations will increase the BLEU score [cite:@bleu].
+
+Taking into account that our purpose is finding the best matching of generated (excluded, in our case) sentences with expected ones, the BLEU assumed to be the best candidate for /extractive generalisation/ metric.
 
 ** Modelling
 # REVIEW Manu: Also, section 3.3. 4 may be structured more effectively (formatting and scoping the contents more towards the focus - `abstractive and extractive summarisation`,  and why you concluded to use transformers for abstractive and spacy for extractive summarisation out of various options mentioned. May be tweaking the content/formatting it well may help it more readable and focussed.
@@ -235,7 +261,7 @@ To resolve the summarisation task two approaches can be used:
       The most important neural net architectures[cite:@ml2] are feed-forward neural nets for tabular data, convolutional nets for computer vision, recurrent nets and long short-term memory (LSTM) nets for sequence processing, encoder/decoders and Transformers for Natural Language Processing, as well as auto-encoders and Generative Adversarial Networks (GANs) for generative learning.
 
 ** Experimentation
-# TODO: Add a bit code explanation 
+# TODO?: Add a bit code explanation - done in source code
 *** Abstractive summarisation
 These approaches allow us to produce a new and completely unique text to summarise the source, and it is hence labelled as abstractive summarisation. To determine the accuracy level, we tested all of the packages described above and came to the conclusion that the best results are presented using the [[https://github.com/huggingface/transformers][Transformers]] package (through the default BERT[cite:@bert] library) and the [[https://github.com/google-research/pegasus][PEGASUS]] library. The first package shows more flexibility, since it allows us to select the most effective language module for further utilisation and has a less significant size (approximately 1GB less) in comparison to PEGASUS by default. Thus, it is much swifter in operation and contains more sophisticated performance metrics.
 
@@ -319,7 +345,7 @@ for i in range(len(df)):
 
 The results of similarity metric comparison for different methods are presented below at picture [[fig:bert-abs]] and [[fig:spacy-ext]].
 
-*** Extractive generalisation
+*** Extractive generalisation <<ex_gen>>
 Extractive generalisation demands the removal of any [company] specific information from the source. Our findings have shown that such tasks can be resolved using a Named Entity Recognition (NER) approach, which is usually included in many NLP packages by default. After a set of comprehensive tests, we discovered that the best results were shown when using the SpaCy library, as it contains a number of pre-trained language models which consist of numerous embedded functionalities, including tokenization, lemmatization, Point-Of-Speech (POS) extraction and named-entity extraction. In our [[https://github.com/turbaevsky/DigiCatapult-summ][API at GitHub]] - which is deployed at https://livedata.link/nlp/upload - we had created an NER-analyser and subsequently removed all of the sentences that contain any organisational or personal names, dates, currencies, geographical locations and other sensitive data. As the task requested a completion of extractive summarisation, this approach has been determined to be the most reasonable, because it provides the highest similarity metric in comparison to other potential approaches.
 
 The implementation of such an approach using python is shown below.
@@ -368,19 +394,23 @@ Despite the fact that the most comprehensive models - such as BERT, GPT(s) or PE
     - /SpaCy/[cite:@spacy] has an advanced linguistic module that is capable of undertaking all of the necessary linguistic transformations and analysis. Additionally, it contains a list of modules to be used for heavily individual tasks, such as semantic analysis and entity extraction. This includes the ability to connect any third-party Neural Networks framework, such as TensorFlow or PyTorch. Notably, even though there is extensive functionality provision, SpaCy is relatively more overwhelming in comparison to other libraries.
     - /Transformers/ is a framework that is utilised to adapt any third-party libraries, including TensorFlow and BERT. Thus, Transformers allows us to efficiently employ all of the privileges of transforming learning, although it is important to note that sometimes this makes the resulting library overweight or too complex for commercial service use.
 
-# Manu: I guess, graphs in 4.1.1 and 4.1.2 are not self-explanatory. Adding more text content under the image will make it more explainable. Indicating what x-axis/y-axis data is, and a short explanation on what the figure is about and how to read it, and what the visualisation is about etc.
+# REVIEW: Manu: I guess, graphs in 4.1.1 and 4.1.2 are not self-explanatory. Adding more text content under the image will make it more explainable. Indicating what x-axis/y-axis data is, and a short explanation on what the figure is about and how to read it, and what the visualisation is about etc.
 *** Abstractive summarisation
 Below, you can see the result of BERT-based /transformers/ and /SpaCy-based/ absractive summarisation models.
 
-#+caption: Abstractive summarisation similarity metrics
-#+BEGIN_center
-#+ATTR_LaTeX: :height 0.3\textwidth :center
+#+ATTR_LATEX: :scale 0.5
 #+NAME:   fig:bert-abs
+#+caption: Abstractive (BERT) summarisation similarity metrics
 [[./sim_trans.png]]
-#+ATTR_LaTeX: :height 0.3\textwidth :center
+
+The averaged similarity score for abstractive summarisation is around 0.8, that means that most of system generated phrases have similar average word-based vector as the expected ones. The similarity score (vertical axis) has a range from zero to one, where one means the whole text matching. The horizontal axis reflects the set of tested texts from the training dataset.
+
+#+ATTR_LATEX: :scale 0.5
 #+name: fig:spacy-ext
+#+caption: Exstractive summarisation similarity metrics
 [[./sim_tf_idf.png]]
-#+END_center
+
+The averaged similarity score for abstractive summarisation is about 1.0, that means that about all of system generated phrases have about the same average word-based vector as the expected ones. As above, the similarity score (vertical axis) has a range from zero to one, where one means the whole text matching. The horizontal axis reflects the set of tested texts from the training dataset.
 
 Surprisingly, it became clear that the extractive summarisation model showed a better similarity metric than the more advanced BERT model.
 
@@ -394,11 +424,16 @@ To assess the quality of the model the following approach has been utilised:
 
 As a result of the comparison, the following chart was constructed.
 
+#+ATTR_LATEX: :scale 0.5
 #+name: fig:bleu
 #+caption: BLEU score for extractive generalisation test
 [[./bleu.png]]
 
-** Conclusion
+As it is mentioned in section [[bl]], BLEU is working by assessing about word-to-word matching. That is the goal for /extractive generalisation/ as the expectation is that the whole sensitive information related sentence is removed.
+
+As it is presented in Fig.[[fig:bleu]] above, the average BLEU score (vertical axis) for training dataset is around 0.6, which is good enough for such kind of task. The issue is that we have pretty limited number of expected sentences (horizontal axis), therefore the assessment may not be accurate enough.
+
+** Conclusion <<fin>>
 
 Following the successful completion of our experiments, we are able to conclude that:
 
@@ -410,7 +445,7 @@ However, the similarity metric which was used for the training dataset demonstra
 
 - at the same time, to complete an /extractive generalisation/ task, the SpaCy module has proved to be one of the most effective, as confirmed by the image [[fig:bleu]] above.
 
-Additionally, given that we closely follow the Agile methodology, we have developed a simple API – which is available on GitHub - to assess the training dataset and experiment with any other texts. This is profoundly important because this adds additional flexibility to our model, allowing for further usage in other applications without significant adaptations.
+Additionally, given that we closely follow the Agile methodology, we have developed a Class, simple API and [[http://132.145.45.32:8501/][UI application]] – which is available on GitHub - to assess the training dataset and experiment with any other texts. This is profoundly important because this adds additional flexibility to our model, allowing for further usage in other applications without significant adaptations.
 
 * Bibliography
 # HowTo:
@@ -430,8 +465,10 @@ Additionally, given that we closely follow the Agile methodology, we have develo
 
 * Source code
 # Manu: Adding more comments in the code also may help in readability as the code is not modular. Future extensions will be easy with better readable code.
-** API
-#+include: "~/projects/10be5/code/api.py" src python
+** Summ Class
+#+include: "~/projects/10be5/code/summ.py" src python
+** Application (UI)
+#+include: "~/projects/10be5/code/app.py" src python
 * Training dataset examples
 #+include: "~/projects/10be5/data/example.csv" src text
 
@@ -441,3 +478,6 @@ Additionally, given that we closely follow the Agile methodology, we have develo
 [fn:3] Extractive summary is choosing specific sentences from the text to compile a summary, while abstractive summary means generating a summary in the computer’s own words.
 [fn:4] Corpus score calculation compares 1 candidate document with multiple sentence and 1+ reference documents also with multiple sentences. It is differ from averaging BLEU scores of each sentence, it calculates the score by /summing the numerators and denominators for each hypothesis-reference(s) pairs before the division/
 [fn:5] Mostly conducted in the last 2 weeks of May 2022, with some ongoing meetings for updates provision and further consultation when needed
+[fn:6] Our highest priority is to satisfy the customer through early and continuous delivery of valuable software [cite:@agile]
+[fn:7] spaCy uses the terms head and child to describe the words connected by a single arc in the dependency tree. The term dep is used for the arc label, which describes the type of syntactic relation that connects the child to the head [cite:@spacy-ling]
+[fn:8] A named entity is a “real-world object” that’s assigned a name – for example, a person, a country, a product or a book title. spaCy can recognize various types of named entities in a document, by asking the model for a prediction. Because models are statistical and strongly depend on the examples they were trained on, this doesn’t always work perfectly and might need some tuning later, depending on your use case
