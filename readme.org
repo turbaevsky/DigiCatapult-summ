@@ -1,4 +1,4 @@
-#+TITLE: Abstractive Summarization and Extractive Generalization with NLP. 2022-10033-Standard Purchase Framework Agreement-Livedata Ltd-AI Researchers-P2021-065. Draft (4) report
+#+TITLE: Abstractive Summarization and Extractive Generalization with NLP. 2022-10033-Standard Purchase Framework Agreement-Livedata Ltd-AI Researchers-P2021-065. Final report.
 #+AUTHOR: [[https://livedata.link][Livedata Limited]]
 
 #+LaTeX_CLASS_OPTIONS: [a4paper]
